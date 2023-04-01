@@ -39,3 +39,23 @@ void printLTR_non_rec_universal(Node* x) {
 		}
 	}
 }
+
+void printLTR_non_rec(const Tree& t) {
+	printLTR_non_rec(t.root);
+}
+
+void printLTR_non_rec(Node* x) {
+	stack<Node*> s;
+	Node* t = x;
+	while (!s.empty() || t != nullptr) {
+		if (t != nullptr) {
+			s.push(t);
+			t = t->left;
+		}
+		else {
+			t = s.top(); s.pop();
+			cout << t->val << " ";
+			t = t->right;
+		}
+	}
+}

@@ -39,3 +39,29 @@ void printLRT_non_rec_universal(Node* x) {
 		}
 	}
 }
+
+void printLRT_non_rec(const Tree& t) {
+	printLRT_non_rec(t.root);
+}
+
+void printLRT_non_rec(Node* x) {
+	stack<Node*> s;
+	Node* t = x;
+	Node* lastVis = nullptr;
+	while (!s.empty() || t != nullptr) {
+		if (t != nullptr) {
+			s.push(t);
+			t = t->left;
+		}
+		else {
+			Node* top = s.top();
+			if (top->right != nullptr && lastVis != top->right) {
+				t = top->right;
+			}
+			else {
+				cout << top->val << " ";
+				lastVis = s.top(); s.pop();
+			}
+		}
+	}
+}

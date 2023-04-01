@@ -18,18 +18,9 @@ void printLTR_rec(Node* x);
 void printLTR_non_rec_universal(const Tree& t);
 void printLTR_non_rec_universal(Node* x);
 
-// one stack version:
-/*void printLTR_non_rec(Node* root) {
-	stack<Node*> st;
-	Node* tmp = root;
-	while (tmp) st.push(tmp), tmp = tmp->left;
-	while (!st.empty()) {
-		tmp = st.top(); st.pop();
-		cout << tmp->val << " ";
-		tmp = tmp->right;
-		while (tmp) st.push(tmp), tmp = tmp->left;
-	}
-}*/
+// Нерекурсивный (итеративный) способ обхода
+void printLTR_non_rec(const Tree& t);
+void printLTR_non_rec(Node* x);
 
 // Итератор основан на универсальном способе
 class TreeIteratorLTR : public Iterator {
