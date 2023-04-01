@@ -28,6 +28,16 @@ struct Tree {
 		else
 			root = nullptr;
 	}
+	Tree& operator=(const Tree& t) {
+		if (this == &t)
+			return *this;
+		delete root;
+		if (t.root)
+			root = new Node(*t.root);
+		else
+			root = nullptr;
+		return *this;
+	}
 	~Tree() { delete root; }
 };
 

@@ -14,41 +14,43 @@ int main() {
 	//   3   5   8
 	//      / \
 	//     6   7
-	Node* root = new Node(1);
-	root->left = new Node(2);
-	root->left->left = new Node(3);
-	root->right = new Node(4);
-	root->right->left = new Node(5);
-	root->right->left->left = new Node(6);
-	root->right->left->right = new Node(7);
-	root->right->right = new Node(8);
+
+	Tree tree{};
+	tree.root = new Node(1);
+	tree.root->left = new Node(2);
+	tree.root->left->left = new Node(3);
+	tree.root->right = new Node(4);
+	tree.root->right->left = new Node(5);
+	tree.root->right->left->left = new Node(6);
+	tree.root->right->left->right = new Node(7);
+	tree.root->right->right = new Node(8);
 
 	cout << "TLR:\n";
-	printTLR_rec(root);
+	printTLR_rec(tree);
 	cout << "\n";
-	printTLR_non_rec(root);
+	printTLR_non_rec_universal(tree);
 	cout << "\n";
-	Iterator* tlr = new TreeIteratorTLR(root);
+	Iterator* tlr = new TreeIteratorTLR(tree.root);
 	while (tlr->hasNext())
 		cout << tlr->next() << " ";
 	cout << "\n";
 
 	cout << "LTR:\n";
-	printLTR_rec(root);
+	printLTR_rec(tree);
 	cout << "\n";
-	printLTR_non_rec(root);
+	printLTR_non_rec_universal(tree);
 	cout << "\n";
-	Iterator* ltr = new TreeIteratorLTR(root);
+	Iterator* ltr = new TreeIteratorLTR(tree.root);
 	while (ltr->hasNext())
 		cout << ltr->next() << " ";
 	cout << "\n";
 
 	cout << "LRT:\n";
-	printLRT_rec(root);
+	printLRT_rec(tree);
 	cout << "\n";
-	printLRT_non_rec(root);
+	printLRT_non_rec_universal(tree);
 	cout << "\n";
-	Iterator* lrt = new TreeIteratorLRT(root);
+	Iterator* lrt = new TreeIteratorLRT(tree.root);
 	while (lrt->hasNext())
 		cout << lrt->next() << " ";
 	cout << "\n";

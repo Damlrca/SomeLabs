@@ -5,41 +5,18 @@
 #include "Tree.h"
 using namespace std;
 
-//
 // Left Top Right
-//
+// Центрированный обход
+// In-order, LNR
 
-void printLTR_rec(Node* x) {
-	if (x == nullptr)
-		return;
-	// <изменять порядок здесь>
-	printLTR_rec(x->left);
-	cout << x->val << " ";
-	printLTR_rec(x->right);
-	// </изменять порядок здесь>
-}
+// Рекурсивный способ обхода
+void printLTR_rec(const Tree& t);
+void printLTR_rec(Node* x);
 
-void printLTR_non_rec(Node* x) {
-	stack<Node*> s;
-	stack<Node*> is;
-	if (x)
-		s.push(x);
-	while (!s.empty()) {
-		Node* t = s.top(); s.pop();
-		if (!is.empty() && is.top() == t) {
-			is.pop();
-			cout << t->val << " ";
-		}
-		else {
-			is.push(t);
-			// <изменять порядок здесь>
-			if (t->right) s.push(t->right);
-			s.push(t);
-			if (t->left) s.push(t->left);
-			// </изменять порядок здесь>
-		}
-	}
-}
+// Мой универсальный нерекурсивный способ обхода использующий 2 стека
+// Можно изменить способ обхода просто поменяв местами строки
+void printLTR_non_rec_universal(const Tree& t);
+void printLTR_non_rec_universal(Node* x);
 
 // one stack version:
 /*void printLTR_non_rec(Node* root) {
