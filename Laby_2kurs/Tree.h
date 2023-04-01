@@ -22,7 +22,7 @@ struct Node {
 struct Tree {
 	Node* root = nullptr;
 	Tree(Node* _root = nullptr) : root(_root) {}
-	Tree(const Tree& t) {
+	explicit Tree(const Tree& t) {
 		if (t.root)
 			root = new Node(*t.root);
 		else

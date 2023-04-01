@@ -30,7 +30,7 @@ int main() {
 	cout << "\n";
 	printTLR_non_rec_universal(tree);
 	cout << "\n";
-	Iterator* tlr = new TreeIteratorTLR(tree.root);
+	Iterator* tlr = new TreeIteratorTLR(tree);
 	while (tlr->hasNext())
 		cout << tlr->next() << " ";
 	cout << "\n";
@@ -40,7 +40,7 @@ int main() {
 	cout << "\n";
 	printLTR_non_rec_universal(tree);
 	cout << "\n";
-	Iterator* ltr = new TreeIteratorLTR(tree.root);
+	Iterator* ltr = new TreeIteratorLTR(tree);
 	while (ltr->hasNext())
 		cout << ltr->next() << " ";
 	cout << "\n";
@@ -50,7 +50,7 @@ int main() {
 	cout << "\n";
 	printLRT_non_rec_universal(tree);
 	cout << "\n";
-	Iterator* lrt = new TreeIteratorLRT(tree.root);
+	Iterator* lrt = new TreeIteratorLRT(tree);
 	while (lrt->hasNext())
 		cout << lrt->next() << " ";
 	cout << "\n";

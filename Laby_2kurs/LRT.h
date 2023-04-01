@@ -38,10 +38,12 @@ void printLRT_non_rec_universal(Node* x);
 	}
 }*/
 
+// Итератор основан на универсальном способе
 class TreeIteratorLRT : public Iterator {
 	stack<Node*> s;
 	stack<Node*> is;
 public:
+	TreeIteratorLRT(const Tree& t) : TreeIteratorLRT(t.root) {}
 	TreeIteratorLRT(Node* x) {
 		if (x)
 			s.push(x);
