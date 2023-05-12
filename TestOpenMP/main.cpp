@@ -1,7 +1,7 @@
 #include <iostream>
 #include <chrono>
 #include <vector>
-#include <omp.h>
+//#include <omp.h>
 
 constexpr int N = 1000;
 
@@ -31,6 +31,6 @@ int main() {
 	}
 
 	auto end_time = std::chrono::system_clock::now();
-	std::cout << "time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "\n";
+	std::cout << "time: " << std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count() << "ms\n";
 	return 0;
 }
