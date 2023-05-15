@@ -6,12 +6,19 @@ constexpr int width = 3000;
 constexpr int height = 3000;
 constexpr int iterations = 3000;
 
-// TEST
+// TEST DEBUG
 // width: 3000
 // height : 3000
 // iterations : 3000
 // without_pragma_time : 33102ms
 // with_pragma_time : 8762ms
+
+// TEST RELEASE
+// width: 3000
+// height : 3000
+// iterations : 3000
+// without_pragma_time : 13792ms
+// with_pragma_time : 3523ms
 
 void mandlebrot_without_pragma() {
 	System::Drawing::Bitmap^ bm = gcnew System::Drawing::Bitmap(width, height);
