@@ -153,7 +153,7 @@ int max_subpaths_sum(Node* node, int& ans) {
 		int right = max_subpaths_sum(node->right, ans);
 		sum = max(sum, right);
 	}
-	sum = sum + node->val;
+	sum += node->val;
 	ans = max(ans, sum);
 	return sum;
 }
@@ -166,32 +166,40 @@ int max_subpaths_sum(const Tree& tree) {
 	return ans;
 }
 
-int max_sum_of_subpath_value2(Node* node, int& ans) {
-	int ret = 0;
-	if (node->left || node->right)
-		ret = INT_MIN;
-	int left;
-	int right;
+// max_paths_sum
+// максимум середи сумм элементов на пути среди всевозможных путей в дереве!
+
+// Возвращает сумму на максимальном подпути начинающемся в вершине node
+int max_paths_sum(Node* node, int& ans) {
+	if (node->left == nullptr && node->right == nullptr) { // лист
+		ans = max(ans, node->val);
+		return node->val;
+	}
+	int sum = 0; // Нет смысла брать отрицательные подпути пути, поэтому = 0
+	int double_sum = 0; // Cумма и левого и правого подпутей
 	if (node->left) {
-		left = max_sum_of_subpath_value2(node->left, ans);
-		ret = max(ret, left);
+		int left = max_paths_sum(node->left, ans);
+		sum = max(sum, left);
+		if (left > 0)
+			double_sum += left;
 	}
 	if (node->right) {
-		right = max_sum_of_subpath_value2(node->right, ans);
-		ret = max(ret, right);
+		int right = max_paths_sum(node->right, ans);
+		sum = max(sum, right);
+		if (right > 0)
+			double_sum += right;
 	}
-	ret = max(node->val, ret + node->val);
-	ans = max(ans, ret);
-	if (node->left && node->right)
-		ans = max(ans, left + right + node->val);
-	return ret;
+	sum += node->val;
+	double_sum += node->val; // считаем что node объединяет левый и правый подпуть в один путь
+	ans = max(ans, double_sum);
+	return sum;
 }
 
-int max_sum_of_subpath_value2(const Tree& tree) {
+int max_paths_sum(const Tree& tree) {
 	if (tree.root == nullptr)
-		throw "empty tree";
+		throw "empty tree!\n";
 	int ans = INT_MIN;
-	max_sum_of_subpath_value2(tree.root, ans);
+	max_paths_sum(tree.root, ans);
 	return ans;
 }
 
@@ -347,9 +355,9 @@ int main() {
 	tree.root->right->left->right = new Node(-7);
 	tree.root->right->right = new Node(1);
 
-	cout << "   path : " << max_fullpaths_sum(tree) << endl;
-	cout << "subpath : " << max_subpaths_sum(tree) << endl;
-	cout << "subpath2: " << max_sum_of_subpath_value2(tree) << endl;
+	cout << "fullpaths: " << max_fullpaths_sum(tree) << endl;
+	cout << " subpaths: " << max_subpaths_sum(tree) << endl;
+	cout << "    paths: " << max_paths_sum(tree) << endl;
 	//max_sum_of_subpath_value2_WITH_PATH(tree);
 #endif // TREE
 	return 0;
