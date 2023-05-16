@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestOpenMP", "TestOpenMP\Te
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenMP_Mandelbrot_Test", "OpenMP_Mandelbrot_Test\OpenMP_Mandelbrot_Test.vcxproj", "{E78BD061-B222-454A-B726-F6F946A395FB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sr_160523", "sr_160523\sr_160523.vcxproj", "{3C6E3A1C-8B57-490D-891D-1FEF654DA94E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{E78BD061-B222-454A-B726-F6F946A395FB}.Release|x64.Build.0 = Release|x64
 		{E78BD061-B222-454A-B726-F6F946A395FB}.Release|x86.ActiveCfg = Release|Win32
 		{E78BD061-B222-454A-B726-F6F946A395FB}.Release|x86.Build.0 = Release|Win32
+		{3C6E3A1C-8B57-490D-891D-1FEF654DA94E}.Debug|x64.ActiveCfg = Debug|x64
+		{3C6E3A1C-8B57-490D-891D-1FEF654DA94E}.Debug|x64.Build.0 = Debug|x64
+		{3C6E3A1C-8B57-490D-891D-1FEF654DA94E}.Debug|x86.ActiveCfg = Debug|Win32
+		{3C6E3A1C-8B57-490D-891D-1FEF654DA94E}.Debug|x86.Build.0 = Debug|Win32
+		{3C6E3A1C-8B57-490D-891D-1FEF654DA94E}.Release|x64.ActiveCfg = Release|x64
+		{3C6E3A1C-8B57-490D-891D-1FEF654DA94E}.Release|x64.Build.0 = Release|x64
+		{3C6E3A1C-8B57-490D-891D-1FEF654DA94E}.Release|x86.ActiveCfg = Release|Win32
+		{3C6E3A1C-8B57-490D-891D-1FEF654DA94E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

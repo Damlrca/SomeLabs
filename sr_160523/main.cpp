@@ -1,0 +1,324 @@
+#include <iostream>
+#include <utility>
+#include <list>
+using namespace std;
+
+//#define ADD_ITH
+#ifdef ADD_ITH
+struct Node {
+	Node* next;
+	int val;
+	Node(int v, Node* n = nullptr) : val(v), next(n) {}
+	Node(const Node& n) {
+		val = n.val;
+		if (n.next) {
+			next = new Node(*n.next);
+		}
+		else {
+			next = nullptr;
+		}
+	}
+	~Node() { delete next; }
+};
+
+class List {
+	Node* root;
+public:
+	List() : root(nullptr) {}
+	int add_i_th(int i, int val) {
+		if (root == nullptr) {
+			if (i != 0) {
+				throw "wrong index!\n";
+			}
+			root = new Node(val);
+		}
+		else {
+			if (i == 0) {
+				root = new Node(val, root);
+			}
+			else {
+				int cnt = 0;
+				Node* now = root;
+				while (now != nullptr && cnt + 1 < i)
+				{
+					now = now->next;
+					cnt++;
+				}
+				if (now == nullptr) {
+					throw "wrong index!\n";
+				}
+				else {
+					now->next = new Node(val, now->next);
+				}
+			}
+		}
+	}
+	void clear() {
+		delete root;
+		root = nullptr;
+	}
+	~List() { clear(); }
+};
+#endif // ADD_ITH
+
+#define TREE
+#ifdef TREE
+struct Node {
+	int val;
+	Node* left;
+	Node* right;
+	Node(int _val) : val(_val), left(nullptr), right(nullptr) {}
+	Node(int _val, Node* _left, Node* _right) : val(_val), left(_left), right(_right) {}
+	Node(const Node& t) : val(t.val) {
+		if (t.left)
+			left = new Node(*t.left);
+		else
+			left = nullptr;
+		if (t.right)
+			right = new Node(*t.right);
+		else
+			right = nullptr;
+	}
+	~Node() { delete left; delete right; }
+};
+
+struct Tree {
+	Node* root = nullptr;
+	Tree(Node* _root = nullptr) : root(_root) {}
+	explicit Tree(const Tree& t) {
+		if (t.root)
+			root = new Node(*t.root);
+		else
+			root = nullptr;
+	}
+	Tree& operator=(const Tree& t) {
+		if (this == &t)
+			return *this;
+		delete root;
+		if (t.root)
+			root = new Node(*t.root);
+		else
+			root = nullptr;
+		return *this;
+	}
+	~Tree() { delete root; }
+};
+#endif // TREE
+
+int max_sum_of_path_value(Node* node) {
+	int sum = 0;
+	if (node->left || node->right)
+		sum = INT_MIN;
+	if (node->left)
+		sum = max(sum, max_sum_of_path_value(node->left));
+	if (node->right)
+		sum = max(sum, max_sum_of_path_value(node->right));
+	sum += node->val;
+	return sum;
+}
+
+int max_sum_of_path_value(const Tree& tree) {
+	if (tree.root == nullptr)
+		throw "empty tree";
+	return max_sum_of_path_value(tree.root);
+}
+
+// first - максимальна€ сумма дл€ пути, начина€ющегос€ с этого Node*
+// second - максимальна€ сумма дл€ пути, начина€ющегос€ с этого Node* или его потомков
+int max_sum_of_subpath_value(Node* node, int& ans) {
+	int ret = 0;
+	if (node->left || node->right)
+		ret = INT_MIN;
+	int left;
+	int right;
+	if (node->left) {
+		left = max_sum_of_subpath_value(node->left, ans);
+		ret = max(ret, left);
+	}
+	if (node->right) {
+		right = max_sum_of_subpath_value(node->right, ans);
+		ret = max(ret, right);
+	}
+	ret = max(node->val, ret + node->val);
+	ans = max(ans, ret);
+	return ret;
+}
+
+int max_sum_of_subpath_value(const Tree& tree) {
+	if (tree.root == nullptr)
+		throw "empty tree";
+	int ans = INT_MIN;
+	max_sum_of_subpath_value(tree.root, ans);
+	return ans;
+}
+
+// first - максимальна€ сумма дл€ пути, начина€ющегос€ с этого Node*
+// second - максимальна€ сумма дл€ пути, начина€ющегос€ с этого Node* или его потомков
+int max_sum_of_subpath_value2(Node* node, int& ans) {
+	int ret = 0;
+	if (node->left || node->right)
+		ret = INT_MIN;
+	int left;
+	int right;
+	if (node->left) {
+		left = max_sum_of_subpath_value2(node->left, ans);
+		ret = max(ret, left);
+	}
+	if (node->right) {
+		right = max_sum_of_subpath_value2(node->right, ans);
+		ret = max(ret, right);
+	}
+	ret = max(node->val, ret + node->val);
+	ans = max(ans, ret);
+	if (node->left && node->right)
+		ans = max(ans, left + right + node->val);
+	return ret;
+}
+
+int max_sum_of_subpath_value2(const Tree& tree) {
+	if (tree.root == nullptr)
+		throw "empty tree";
+	int ans = INT_MIN;
+	max_sum_of_subpath_value2(tree.root, ans);
+	return ans;
+}
+
+// first - путь
+// second - max summ
+pair<list<Node*>, int> max_sum_of_subpath_value2_WITH_PATH(Node* node, int& ans, Node*& path_root, list<Node*>& path_left, list<Node*>& path_right) {
+	if (node->left == nullptr && node->right == nullptr) {
+		if (node->val > ans) {
+			ans = node->val;
+			path_root = node;
+			path_left = list<Node*>{};
+			path_right = list<Node*>{};
+		}
+		return { list<Node*>{node}, node->val };
+	}
+	if (node->left) {
+		pair<list<Node*>, int> left = max_sum_of_subpath_value2_WITH_PATH(node->left, ans, path_root, path_left, path_right);
+		if (left.second > 0) {
+			list<Node*> path = std::move(left.first);
+			if (left.second + node->val > ans) {
+				ans = left.second + node->val;
+				path_root = node;
+				path_left = path;
+				path_right = list<Node*>{};
+			}
+			path.push_front(node);
+			return { move(path), left.second + node->val };
+		}
+		else {
+			if (node->val > ans) {
+				ans = node->val;
+				path_root = node;
+				path_left = list<Node*>{};
+				path_right = list<Node*>{};
+			}
+			return { list<Node*>{node}, node->val };
+		}
+	}
+	if (node->right) {
+		pair<list<Node*>, int> right = max_sum_of_subpath_value2_WITH_PATH(node->right, ans, path_root, path_left, path_right);
+		if (right.second > 0) {
+			list<Node*> path = std::move(right.first);
+			if (right.second + node->val > ans) {
+				ans = right.second + node->val;
+				path_root = node;
+				path_left = list<Node*>{};
+				path_right = path;
+			}
+			path.push_front(node);
+			return { move(path), right.second + node->val };
+		}
+		else {
+			if (node->val > ans) {
+				ans = node->val;
+				path_root = node;
+				path_left = list<Node*>{};
+				path_right = list<Node*>{};
+			}
+			return { list<Node*>{node}, node->val };
+		}
+	}
+	{ // node->left != nullptr && node->right != nullptr
+		pair<list<Node*>, int> left = max_sum_of_subpath_value2_WITH_PATH(node->left, ans, path_root, path_left, path_right);
+		pair<list<Node*>, int> right = max_sum_of_subpath_value2_WITH_PATH(node->right, ans, path_root, path_left, path_right);
+		if (left.second > 0 && right.second > 0) {
+			if (left.second + right.second + node->val > ans) {
+				ans = left.second + right.second + node->val;
+				path_root = node;
+				path_left = left.first;
+				path_right = right.first;
+			}
+		}
+		if (left.second > 0 && left.second >= right.second) {
+			list<Node*> path = std::move(left.first);
+			if (left.second + node->val > ans) {
+				ans = left.second + node->val;
+				path_root = node;
+				path_left = path;
+				path_right = list<Node*>{};
+			}
+			path.push_front(node);
+			return { move(path), left.second + node->val };
+		}
+		else if (right.second > 0) {
+			list<Node*> path = std::move(right.first);
+			if (node->val > ans) {
+				ans = node->val;
+				path_root = node;
+				path_left = list<Node*>{};
+				path_right = list<Node*>{};
+			}
+			path.push_front(node);
+			return { move(path), right.second + node->val };
+		}
+		else {
+			if (node->val > ans) {
+				ans = node->val;
+				path_root = node;
+				path_left = list<Node*>{};
+				path_right = list<Node*>{};
+			}
+			return { list<Node*>{node}, node->val };
+		}
+	}
+}
+
+void max_sum_of_subpath_value2_WITH_PATH(const Tree& tree) {
+	if (tree.root == nullptr)
+		throw "empty tree";
+	int ans = tree.root->val;
+	Node* root = tree.root;
+	list<Node*> left;
+	list<Node*> right;
+	max_sum_of_subpath_value2_WITH_PATH(tree.root, ans, root, left, right);
+	cout << ans << ": ";
+}
+
+int main() {
+	//      -1
+	//      / \
+	//    -2   4
+	//    /   / \
+	//  -3   5   1
+	//      / \
+	//    -6  -7
+
+	Tree tree{};
+	tree.root = new Node(-1);
+	tree.root->left = new Node(-2);
+	tree.root->left->left = new Node(-3);
+	tree.root->right = new Node(4);
+	tree.root->right->left = new Node(5);
+	tree.root->right->left->left = new Node(-6);
+	tree.root->right->left->right = new Node(-7);
+	tree.root->right->right = new Node(1);
+
+	cout << "   path : " << max_sum_of_path_value(tree) << endl;
+	cout << "subpath : " << max_sum_of_subpath_value(tree) << endl;
+	cout << "subpath2: " << max_sum_of_subpath_value2(tree) << endl;
+	//max_sum_of_subpath_value2_WITH_PATH(tree);
+	return 0;
+}
