@@ -1,6 +1,7 @@
 #include <iostream>
 #include <utility>
 #include <list>
+#include <vector>
 using namespace std;
 
 //#define ADD_ITH
@@ -203,118 +204,90 @@ int max_paths_sum(const Tree& tree) {
 	return ans;
 }
 
-// first - путь
-// second - max summ
-pair<list<Node*>, int> max_sum_of_subpath_value2_WITH_PATH(Node* node, int& ans, Node*& path_root, list<Node*>& path_left, list<Node*>& path_right) {
-	if (node->left == nullptr && node->right == nullptr) {
-		if (node->val > ans) {
-			ans = node->val;
+// max_paths_sum_and_path
+// максимум середи сумм элементов на пути среди всевозможных путей в дереве
+// и этот путь!
+
+// Возвращает
+// first - подпуть с максимальной суммой
+// second - максимальная сумма
+pair<list<Node*>, int> max_paths_sum_and_path(Node* node, int& ans,
+	Node*& path_root, list<Node*>& path_left, list<Node*>& path_right) {
+	// C++17 for this feature
+	if (node->left == nullptr && node->right == nullptr) // лист
+		return { list<Node*>{node}, node->val };
+	pair<list<Node*>, int> left{};
+	pair<list<Node*>, int> right{};
+	if (node->left)
+		left = max_paths_sum_and_path(node->left, ans, path_root, path_left, path_right);
+	if (node->right)
+		right = max_paths_sum_and_path(node->right, ans, path_root, path_left, path_right);
+	// update ans
+	if (left.second > 0 && right.second > 0) {
+		if (int t = left.second + right.second + node->val; t > ans) {
+			ans = t;
+			path_root = node;
+			path_left = left.first;
+			path_right = right.first;
+		}
+	}
+	else if (left.second > 0) {
+		if (int t = left.second + node->val; t > ans) {
+			ans = t;
+			path_root = node;
+			path_left = left.first;
+			path_right = list<Node*>{};
+		}
+	}
+	else if (right.second > 0) {
+		if (int t = right.second + node->val; t > ans) {
+			ans = t;
+			path_root = node;
+			path_left = list<Node*>{};
+			path_right = right.first;
+		}
+	}
+	else {
+		if (int t = node->val; t > ans) {
+			ans = t;
 			path_root = node;
 			path_left = list<Node*>{};
 			path_right = list<Node*>{};
 		}
-		return { list<Node*>{node}, node->val };
 	}
-	if (node->left) {
-		pair<list<Node*>, int> left = max_sum_of_subpath_value2_WITH_PATH(node->left, ans, path_root, path_left, path_right);
-		if (left.second > 0) {
-			list<Node*> path = std::move(left.first);
-			if (left.second + node->val > ans) {
-				ans = left.second + node->val;
-				path_root = node;
-				path_left = path;
-				path_right = list<Node*>{};
-			}
-			path.push_front(node);
-			return { move(path), left.second + node->val };
-		}
-		else {
-			if (node->val > ans) {
-				ans = node->val;
-				path_root = node;
-				path_left = list<Node*>{};
-				path_right = list<Node*>{};
-			}
-			return { list<Node*>{node}, node->val };
-		}
+	// return
+	if (left.second > 0 && left.second >= right.second) {
+		list<Node*> path = move(left.first);
+		path.push_front(node);
+		return { path, node->val + left.second };
 	}
-	if (node->right) {
-		pair<list<Node*>, int> right = max_sum_of_subpath_value2_WITH_PATH(node->right, ans, path_root, path_left, path_right);
-		if (right.second > 0) {
-			list<Node*> path = std::move(right.first);
-			if (right.second + node->val > ans) {
-				ans = right.second + node->val;
-				path_root = node;
-				path_left = list<Node*>{};
-				path_right = path;
-			}
-			path.push_front(node);
-			return { move(path), right.second + node->val };
-		}
-		else {
-			if (node->val > ans) {
-				ans = node->val;
-				path_root = node;
-				path_left = list<Node*>{};
-				path_right = list<Node*>{};
-			}
-			return { list<Node*>{node}, node->val };
-		}
+	else if (right.second > 0) {
+		list<Node*> path = move(right.first);
+		path.push_front(node);
+		return { path, node->val + right.second };
 	}
-	{ // node->left != nullptr && node->right != nullptr
-		pair<list<Node*>, int> left = max_sum_of_subpath_value2_WITH_PATH(node->left, ans, path_root, path_left, path_right);
-		pair<list<Node*>, int> right = max_sum_of_subpath_value2_WITH_PATH(node->right, ans, path_root, path_left, path_right);
-		if (left.second > 0 && right.second > 0) {
-			if (left.second + right.second + node->val > ans) {
-				ans = left.second + right.second + node->val;
-				path_root = node;
-				path_left = left.first;
-				path_right = right.first;
-			}
-		}
-		if (left.second > 0 && left.second >= right.second) {
-			list<Node*> path = std::move(left.first);
-			if (left.second + node->val > ans) {
-				ans = left.second + node->val;
-				path_root = node;
-				path_left = path;
-				path_right = list<Node*>{};
-			}
-			path.push_front(node);
-			return { move(path), left.second + node->val };
-		}
-		else if (right.second > 0) {
-			list<Node*> path = std::move(right.first);
-			if (node->val > ans) {
-				ans = node->val;
-				path_root = node;
-				path_left = list<Node*>{};
-				path_right = list<Node*>{};
-			}
-			path.push_front(node);
-			return { move(path), right.second + node->val };
-		}
-		else {
-			if (node->val > ans) {
-				ans = node->val;
-				path_root = node;
-				path_left = list<Node*>{};
-				path_right = list<Node*>{};
-			}
-			return { list<Node*>{node}, node->val };
-		}
+	else {
+		list<Node*> path{};
+		path.push_front(node);
+		return { path, node->val };
 	}
 }
 
-void max_sum_of_subpath_value2_WITH_PATH(const Tree& tree) {
+pair<int, vector<Node*>> max_paths_sum_and_path(const Tree& tree) {
 	if (tree.root == nullptr)
-		throw "empty tree";
-	int ans = tree.root->val;
-	Node* root = tree.root;
+		throw "empty tree!\n";
+	int ans = INT_MIN;
+	Node* root = nullptr;
 	list<Node*> left;
 	list<Node*> right;
-	max_sum_of_subpath_value2_WITH_PATH(tree.root, ans, root, left, right);
-	cout << ans << ": ";
+	max_paths_sum_and_path(tree.root, ans, root, left, right);
+	vector<Node*> path;
+	for (auto it = left.rbegin(); it != left.rend(); it++)
+		path.push_back(*it);
+	path.push_back(root);
+	for (auto it = right.begin(); it != right.end(); it++)
+		path.push_back(*it);
+	return { ans, path };
 }
 #endif // TREE
 
@@ -358,7 +331,15 @@ int main() {
 	cout << "fullpaths: " << max_fullpaths_sum(tree) << endl;
 	cout << " subpaths: " << max_subpaths_sum(tree) << endl;
 	cout << "    paths: " << max_paths_sum(tree) << endl;
-	//max_sum_of_subpath_value2_WITH_PATH(tree);
+	auto v = max_paths_sum_and_path(tree);
+	cout << "   paths+: " << v.first << "; path: ";
+	for (auto i : v.second)
+		cout << i->val << " ";
+	cout << endl;
+	// fullpaths: 4
+	//  subpaths: 9
+	//     paths: 10
+	//    paths+: 10; path: 5 4 1
 #endif // TREE
 	return 0;
 }
