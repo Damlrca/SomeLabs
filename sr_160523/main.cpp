@@ -3,7 +3,9 @@
 #include <list>
 using namespace std;
 
-//#define ADD_ITH
+#define ADD_ITH
+//#define TREE
+
 #ifdef ADD_ITH
 struct Node {
 	Node* next;
@@ -18,6 +20,11 @@ struct Node {
 			next = nullptr;
 		}
 	}
+	void print() {
+		cout << val << " ";
+		if (next)
+			next->print();
+	}
 	~Node() { delete next; }
 };
 
@@ -25,33 +32,33 @@ class List {
 	Node* root;
 public:
 	List() : root(nullptr) {}
+	List(const List& l) : root(new Node(*l.root)) {}
 	int add_i_th(int i, int val) {
-		if (root == nullptr) {
-			if (i != 0) {
-				throw "wrong index!\n";
-			}
-			root = new Node(val);
+		if (i < 0)
+			throw "wrong index!\n";
+		if (i == 0) {
+			root = new Node(val, root);
 		}
 		else {
-			if (i == 0) {
-				root = new Node(val, root);
+			int next_id = 1;
+			Node* now = root;
+			while (now != nullptr && next_id < i)
+			{
+				now = now->next;
+				next_id++;
+			}
+			if (now == nullptr) {
+				throw "wrong index!\n";
 			}
 			else {
-				int cnt = 0;
-				Node* now = root;
-				while (now != nullptr && cnt + 1 < i)
-				{
-					now = now->next;
-					cnt++;
-				}
-				if (now == nullptr) {
-					throw "wrong index!\n";
-				}
-				else {
-					now->next = new Node(val, now->next);
-				}
+				now->next = new Node(val, now->next);
 			}
 		}
+	}
+	void print() {
+		if (root)
+			root->print();
+		cout << endl;
 	}
 	void clear() {
 		delete root;
@@ -61,7 +68,6 @@ public:
 };
 #endif // ADD_ITH
 
-#define TREE
 #ifdef TREE
 struct Node {
 	int val;
@@ -103,7 +109,6 @@ struct Tree {
 	}
 	~Tree() { delete root; }
 };
-#endif // TREE
 
 int max_sum_of_path_value(Node* node) {
 	int sum = 0;
@@ -296,8 +301,27 @@ void max_sum_of_subpath_value2_WITH_PATH(const Tree& tree) {
 	max_sum_of_subpath_value2_WITH_PATH(tree.root, ans, root, left, right);
 	cout << ans << ": ";
 }
+#endif // TREE
 
 int main() {
+#ifdef ADD_ITH
+	List mylist;
+	while (true)
+	{
+		cout << "list: ";
+		mylist.print();
+		int id, val;
+		cin >> id >> val;
+		try {
+			mylist.add_i_th(id, val);
+		}
+		catch (const char* c) {
+			cout << "error: " << c << endl;
+		}
+	}
+#endif // ADD_ITH
+
+#ifdef TREE
 	//      -1
 	//      / \
 	//    -2   4
@@ -320,5 +344,6 @@ int main() {
 	cout << "subpath : " << max_sum_of_subpath_value(tree) << endl;
 	cout << "subpath2: " << max_sum_of_subpath_value2(tree) << endl;
 	//max_sum_of_subpath_value2_WITH_PATH(tree);
+#endif // TREE
 	return 0;
 }
