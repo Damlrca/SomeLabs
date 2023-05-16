@@ -3,8 +3,8 @@
 #include <list>
 using namespace std;
 
-#define ADD_ITH
-//#define TREE
+//#define ADD_ITH
+#define TREE
 
 #ifdef ADD_ITH
 struct Node {
@@ -69,6 +69,8 @@ public:
 #endif // ADD_ITH
 
 #ifdef TREE
+// классы Node и Tree скопированы из TreeTraversals/Tree.h
+
 struct Node {
 	int val;
 	Node* left;
@@ -110,22 +112,25 @@ struct Tree {
 	~Tree() { delete root; }
 };
 
-int max_sum_of_path_value(Node* node) {
-	int sum = 0;
-	if (node->left || node->right)
-		sum = INT_MIN;
+// max_fullpaths_sum
+// максимум середи сумм элементов на пути среди всевозможных путей от корня дерева до его листьев
+
+int max_fullpaths_sum(Node* node) {
+	if (node->left == nullptr && node->right == nullptr) // лист
+		return node->val;
+	int sum = INT_MIN;
 	if (node->left)
-		sum = max(sum, max_sum_of_path_value(node->left));
+		sum = max(sum, max_fullpaths_sum(node->left));
 	if (node->right)
-		sum = max(sum, max_sum_of_path_value(node->right));
+		sum = max(sum, max_fullpaths_sum(node->right));
 	sum += node->val;
 	return sum;
 }
 
-int max_sum_of_path_value(const Tree& tree) {
+int max_fullpaths_sum(const Tree& tree) {
 	if (tree.root == nullptr)
 		throw "empty tree";
-	return max_sum_of_path_value(tree.root);
+	return max_fullpaths_sum(tree.root);
 }
 
 // first - максимальная сумма для пути, начинаяющегося с этого Node*
@@ -340,7 +345,7 @@ int main() {
 	tree.root->right->left->right = new Node(-7);
 	tree.root->right->right = new Node(1);
 
-	cout << "   path : " << max_sum_of_path_value(tree) << endl;
+	cout << "   path : " << max_fullpaths_sum(tree) << endl;
 	cout << "subpath : " << max_sum_of_subpath_value(tree) << endl;
 	cout << "subpath2: " << max_sum_of_subpath_value2(tree) << endl;
 	//max_sum_of_subpath_value2_WITH_PATH(tree);
