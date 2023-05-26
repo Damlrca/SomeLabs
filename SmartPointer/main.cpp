@@ -1,3 +1,5 @@
+// Sadikov Damir, 2023
+// SmartPointer
 #include<iostream>
 using namespace std;
 

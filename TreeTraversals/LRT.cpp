@@ -1,3 +1,5 @@
+ï»¿// Sadikov Damir, 2023
+// TreeTraversal
 #include "LRT.h"
 
 void printLRT_rec(const Tree& t) {
@@ -7,11 +9,11 @@ void printLRT_rec(const Tree& t) {
 void printLRT_rec(Node* x) {
 	if (x == nullptr)
 		return;
-	// <èçìåíÿòü ïîðÿäîê çäåñü>
+	// <Ð¸Ð·Ð¼ÐµÐ½ÑÑ‚ÑŒ Ð¿Ð¾Ñ€ÑÐ´Ð¾Ðº Ð·Ð´ÐµÑÑŒ>
 	printLRT_rec(x->left);
 	printLRT_rec(x->right);
 	cout << x->val << " ";
-	// </èçìåíÿòü ïîðÿäîê çäåñü>
+	// </Ð¸Ð·Ð¼ÐµÐ½ÑÑ‚ÑŒ Ð¿Ð¾Ñ€ÑÐ´Ð¾Ðº Ð·Ð´ÐµÑÑŒ>
 }
 
 void printLRT_non_rec_universal(const Tree& t) {
@@ -31,11 +33,11 @@ void printLRT_non_rec_universal(Node* x) {
 		}
 		else {
 			is.push(t);
-			// <èçìåíÿòü ïîðÿäîê çäåñü>
+			// <Ð¸Ð·Ð¼ÐµÐ½ÑÑ‚ÑŒ Ð¿Ð¾Ñ€ÑÐ´Ð¾Ðº Ð·Ð´ÐµÑÑŒ>
 			s.push(t);
 			if (t->right) s.push(t->right);
 			if (t->left) s.push(t->left);
-			// </èçìåíÿòü ïîðÿäîê çäåñü>
+			// </Ð¸Ð·Ð¼ÐµÐ½ÑÑ‚ÑŒ Ð¿Ð¾Ñ€ÑÐ´Ð¾Ðº Ð·Ð´ÐµÑÑŒ>
 		}
 	}
 }

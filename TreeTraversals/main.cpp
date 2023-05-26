@@ -1,3 +1,5 @@
+// Sadikov Damir, 2023
+// TreeTraversal
 #include <iostream>
 #include <stack>
 #include "Tree.h"

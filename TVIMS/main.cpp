@@ -1,21 +1,23 @@
+п»ї// Sadikov Damir, 2023
+// TVIMS
 #include <iostream>
 #include <vector>
 #include <utility>
 using namespace std;
 
 int main() {
-	int n; // Размер выборки
+	int n; // Р Р°Р·РјРµСЂ РІС‹Р±РѕСЂРєРё
 	cout << "n: " << flush; cin >> n;
-	int k; // Кол-во интервалов
+	int k; // РљРѕР»-РІРѕ РёРЅС‚РµСЂРІР°Р»РѕРІ
 	cout << "k: " << flush; cin >> k;
-	// vector<pair<z[i], m[i]>> // Представитель интервала + Абсолютная частота
+	// vector<pair<z[i], m[i]>> // РџСЂРµРґСЃС‚Р°РІРёС‚РµР»СЊ РёРЅС‚РµСЂРІР°Р»Р° + РђР±СЃРѕР»СЋС‚РЅР°СЏ С‡Р°СЃС‚РѕС‚Р°
 	vector<pair<double, double>> v(k);
 	for (int i = 0; i < k; i++) {
 		cout << "z[" << i + 1 << "], m[" << i + 1 << "]: " << flush;
 		cin >> v[i].first >> v[i].second;
  	}
-	double X{}; // Среднее выборочное
-	double S{}; // Выборочная дисперсия
+	double X{}; // РЎСЂРµРґРЅРµРµ РІС‹Р±РѕСЂРѕС‡РЅРѕРµ
+	double S{}; // Р’С‹Р±РѕСЂРѕС‡РЅР°СЏ РґРёСЃРїРµСЂСЃРёСЏ
 	for (int i = 0; i < k; i++) {
 		X += v[i].first * v[i].second;
 	}

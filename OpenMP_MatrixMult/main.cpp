@@ -1,3 +1,5 @@
+// Sadikov Damir, 2023
+// OpenMP_MatrixMult
 #include <iostream>
 #include <chrono>
 #include <vector>

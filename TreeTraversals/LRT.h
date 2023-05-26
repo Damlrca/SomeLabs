@@ -1,4 +1,6 @@
-﻿#pragma once
+﻿// Sadikov Damir, 2023
+// TreeTraversal
+#pragma once
 
 #include <iostream>
 #include <stack>

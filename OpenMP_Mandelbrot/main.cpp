@@ -1,3 +1,5 @@
+// Sadikov Damir, 2023
+// OpenMP_Mandelbrot
 #include <iostream>
 #include <chrono>
 #include <algorithm>

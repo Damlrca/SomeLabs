@@ -1,3 +1,5 @@
+// Sadikov Damir, 2023
+// AVLtree
 #include "AVLtree.h"
 #include <iostream>
 using namespace std;
