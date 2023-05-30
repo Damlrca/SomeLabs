@@ -16,7 +16,7 @@ public:
 	Node* next; // next node
 	int val; // value
 	Node(int _val, Node* _next) : val(_val), next(_next) {}
-	~Node() { delete next; }
+	~Node() {}
 
 	// operator new, operator delete
 
@@ -30,9 +30,7 @@ public:
 	List() : first(nullptr) {}
 	~List() {
 		while (first) {
-			Node* t = first->next;
-			delete first;
-			first = t;
+			delFirst();
 		}
 	}
 	void addFirst(int v) {
