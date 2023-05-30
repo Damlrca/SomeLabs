@@ -39,6 +39,8 @@ void Node::init(size_t _memSize) {
 	mem = static_cast<Node*>(::operator new(sizeof(Node) * _memSize));
 	memSize = _memSize;
 	firstFree = mem;
+	// Работаем с неинициализированной памятью (в общем случае так нельзя,
+	// но класс Node достаточно прост)
 	for (size_t i = 0; i + 1 < memSize; i++)
 		mem[i].next = mem + i + 1;
 	mem[memSize - 1].next = nullptr;

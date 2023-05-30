@@ -9,6 +9,8 @@ class Node {
 	static Node* firstFree; // Указатель на первый не занятый элемент в предвыделенной памяти
 	static size_t memSize; // Размер предвыделенной памяти
 public:
+	// В такой реализации подразумевается что есть всего 1 List,
+	// listFirst - указатель на первый элемент в этом List
 	static void gc(Node* listFirst); // garbage clean
 	static void init(size_t _memSize); // инициализация предвыделенной памяти
 	
