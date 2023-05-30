@@ -8,9 +8,14 @@ Node* Node::mem = nullptr;
 Node* Node::firstFree = nullptr;
 size_t Node::memSize = 0;
 
-void Node::gc() {
+void Node::gc(Node *listFirst) {
 	std::set<size_t> s; // Можно обойтись без std::set
 	Node* temp = firstFree;
+	while (temp) {
+		s.insert(temp - mem);
+		temp = temp->next;
+	}
+	temp = listFirst;
 	while (temp) {
 		s.insert(temp - mem);
 		temp = temp->next;

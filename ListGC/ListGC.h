@@ -9,7 +9,7 @@ class Node {
 	static Node* firstFree; // Указатель на первый не занятый элемент в предвыделенной памяти
 	static size_t memSize; // Размер предвыделенной памяти
 public:
-	static void gc(); // garbage clean
+	static void gc(Node* listFirst); // garbage clean
 	static void init(size_t _memSize); // инициализация предвыделенной памяти
 	
 	// Node
@@ -38,7 +38,7 @@ public:
 			first = new Node(v, first);
 		}
 		catch(...) {
-			Node::gc();
+			Node::gc(first);
 			first = new Node(v, first);
 		}
 	}
@@ -46,7 +46,7 @@ public:
 		if (first == nullptr)
 			throw 1;
 		Node* t = first->next;
-		delete first;
+		//delete first; // Не нужно, garbage collector же !
 		first = t;
 	}
 };
